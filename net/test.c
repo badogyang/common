@@ -7,15 +7,22 @@
 int main()
 {
     MParser* p = MParser_New();
-    char buf[] = {0x00, 0x01, 0x00, 0x02, 0x00, 0x03, 0x00, 0x04, 0x00, 0x00, 0x00, 0x04};
+    char buf[] = {0x00, 0x01, 0x00, 0x02, 0x00};
+    char another[] = {0x03, 0x00, 0x04, 0x00, 0x00, 0x00, 0x04};
     char data[] = {0x11, 0x12, 0x13, 0x14};
     Message* m = MParser_ReadMem(p, buf, sizeof(buf));
-    printf("m = %p\n", m);
     int i = 0;
 
     if( !m )
     {
         printf("parse again...\n");
+
+        m = MParser_ReadMem(p, another, sizeof(another));
+    }
+
+    if( !m )
+    {
+        printf("parse again again...\n");
 
         m = MParser_ReadMem(p, data, sizeof(data));
     }

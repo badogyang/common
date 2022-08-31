@@ -14,6 +14,83 @@ typedef struct msg_parser
     Message* msg;    // 解析中的协议消息（半成品）
 } MsgParser;
 
+static void InitState(MsgParser* p) 
+{
+    p->header = 0;
+    p->need = sizeof(p->cache);
+
+    free(p->msg);
+
+    p->msg = NULL;
+}
+
+static int ToMidState(MsgParser* p)
+{
+    p->header = 1;
+    p->need = p->cache.length;
+
+    p->msg = malloc(sizeof(p->cache) + p->need);
+
+    if( p->msg ) 
+    {
+        *p->msg = p->cache;
+    }
+
+    return !!p->msg;
+}
+
+static Message* ToLastState(MsgParser* p)
+{
+    Message* ret = NULL;
+
+    if( p->header && !p->need )
+    {
+        ret = p->msg;
+        p->msg = NULL;
+    }
+
+    return ret;
+}
+
+static void noth(Message* m)
+{
+    m->type = ntohs(m->type);
+    m->cmd = ntohs(m->cmd);
+    m->index = ntohs(m->index);
+    m->total = ntohs(m->total);
+    m->length = ntohl(m->length);
+}
+
+static int ToRecv(int fd, char* buf, int size)
+{
+    int retry = 0;
+    int i = 0;
+
+    while ( i < size )
+    {
+        int len = read(fd, buf + i, size -i);
+
+        if( len > 0 )
+        {
+            i += len;
+        }
+        else if( len < 0 )
+        {
+            break;
+        }
+        else
+        {
+            if( retry++ > 5 )
+            {
+                break;
+            }
+
+            usleep(200 * 1000);
+        }
+    }
+    
+    return i;
+}
 
 MParser* MParser_New()
 {
@@ -33,54 +110,47 @@ Message* MParser_ReadMem(MParser* parser, unsigned char* mem, unsigned int lengt
     {
         if( !p->header )
         {
-            if( p->need <= length )
-            {
-                memcpy(&p->cache, mem, p->need);
+            int len = (p->need < length) ? p->need : length;
+            int offset = sizeof(p->cache) - p->need;
 
-                p->cache.type = ntohs(p->cache.type);
-                p->cache.cmd = ntohs(p->cache.cmd);
-                p->cache.index = ntohs(p->cache.index);
-                p->cache.total = ntohs(p->cache.total);
-                p->cache.length = ntohl(p->cache.length);
+            memcpy((char*)&p->cache + offset, mem, len);
+
+            if( p->need == len )
+            {
+                noth(&p->cache);
 
                 mem += p->need;
                 length -= p->need;
 
-                p->header = 1;
-                p->need = p->cache.length;
-
-                ret = MParser_ReadMem(p, mem, length);
+                if( ToMidState(p) )
+                {
+                    ret = MParser_ReadMem(p, mem, length);
+                }
+                else
+                {
+                    InitState(p);
+                }
+            }
+            else
+            {
+                p->need -= len;
             }
         }
         else
         {
-            if( !p->msg )
-            {
-                p->msg = malloc(sizeof(p->cache) + p->need);
-
-                if( p->msg )
-                {
-                    *p->msg = p->cache;
-                }
-            }
-
             if( p->msg )
             {
-                unsigned int len = (p->need < length) ? p->need : length;
-                unsigned int offset = p->msg->length - p->need;
+                int len = (p->need < length) ? p->need : length;
+                int offset = p->msg->length - p->need;
 
-                memcpy(p->msg->payload, mem, len);
+                memcpy(p->msg->payload + offset, mem, len);
 
                 p->need -= len;
             }
 
-            if( !p->need )
+            if( ret = ToLastState(p) )
             {
-                ret = p->msg;
-
-                p->msg = NULL;
-
-                MParser_Reset(p);
+                InitState(p);
             }
         }
     }
@@ -91,6 +161,49 @@ Message* MParser_ReadMem(MParser* parser, unsigned char* mem, unsigned int lengt
 Message* MParser_ReadFd(MParser* parser, int fd)
 {
     Message* ret = NULL;
+    MsgParser* p = (MsgParser*) parser;
+
+    if( (fd != -1) && p )
+    {
+        if( !p->header )
+        {
+            int offset = sizeof(p->cache) - p->need;
+            int len = ToRecv(fd, (char*)&p->cache + offset, p->need);
+
+            if( len == p->need )
+            {
+                noth(&p->cache);
+
+                if( ToMidState(p) )
+                {
+                    ret = MParser_ReadFd(p, fd);
+                }
+                else
+                {
+                    InitState(p);
+                }
+            }
+            else
+            {
+                p->need -= len;
+            }
+        }
+        else
+        {
+            if( p->msg )
+            {
+                int offset = p->msg->length - p->need;
+                int len = ToRecv(fd, p->msg->payload + offset, p->need);
+
+                p->need -= len;
+            }
+
+            if( ret = ToLastState(p) )
+            {
+                InitState(p);
+            }
+        }
+    }
     
     return ret;
 }
