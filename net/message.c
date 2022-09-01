@@ -22,3 +22,45 @@ Message* Message_New(unsigned short type, unsigned short cmd, unsigned short ind
 
     return ret;
 }
+
+int Message_Size(Message* m)
+{
+    int ret = 0;
+
+    if( m )
+    {
+        ret = sizeof(Message) + m->length;
+    }
+
+    return ret;
+}
+
+//网络字节顺序转换为主机字节顺序
+Message* Message_N2H(Message* m)
+{
+    if( m )
+    { 
+        m->type = ntohs(m->type);
+        m->cmd = ntohs(m->cmd);
+        m->index = ntohs(m->index);
+        m->total = ntohs(m->total);
+        m->length = ntohl(m->length);
+    }
+
+    return m;
+}
+
+//主机字节顺序转换为网络字节顺序
+Message* Message_H2N(Message* m)
+{
+    if( m )
+    {
+        m->type = htons(m->type);
+        m->cmd = htons(m->cmd);
+        m->index = htons(m->index);
+        m->total = htons(m->total);
+        m->length = htonl(m->length);
+    }
+
+    return m;
+}
