@@ -16,7 +16,7 @@ int main()
     Message* pm = NULL;
     TcpClient* client = TcpClient_New();
     
-    if( client && TcpClient_Connect(client, "127.0.0.1", 8888) )
+    if( client && TcpClient_Connect(client, "127.0.0.1", 8899) )
     {
         printf("connect success\n");
 

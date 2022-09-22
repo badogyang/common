@@ -8,9 +8,9 @@ typedef void (*Listener)(TcpClient*, int);
 
 enum
 {
-    EVT_CONN,
-    EVT_DATA,
-    EVT_CLOSE
+    EVT_CONN,    //连接
+    EVT_DATA,    //数据
+    EVT_CLOSE    //关闭
 };
 
 TcpServer* TcpServer_New();

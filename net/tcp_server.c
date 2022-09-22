@@ -44,7 +44,7 @@ int TcpServer_Start(TcpServer* server, int port, int max)
 {
     Server* s = (Server*)server;
 
-    if( s && ! s->valid )
+    if( s && !s->valid )
     {
         struct sockaddr_in saddr = {0};
 
@@ -56,8 +56,8 @@ int TcpServer_Start(TcpServer* server, int port, int max)
         saddr.sin_addr.s_addr = htonl(INADDR_ANY);
         saddr.sin_port = htons(port);
 
-        s->valid = s->valid && (bind(s->fd, (struct sockaddr*)&saddr, sizeof(saddr)) != -1);
-        s->valid - s->valid && (listen(s->fd, max) != -1);
+        s->valid = s->valid && (bind(s->fd, (struct sockaddr*)&saddr, sizeof(saddr)) != -1 );
+        s->valid = s->valid && (listen(s->fd, max) != -1);
     }
 
     return s->valid;
@@ -75,7 +75,7 @@ void TcpServer_Stop(TcpServer* server)
 
         close(s->fd);
 
-        for (i = 0; i < FD_SIZE; i++)
+        for(i=0; i<FD_SIZE; i++)
         {
             TcpClient_Del(s->client[i]);
             s->client[i] = NULL;
@@ -100,7 +100,61 @@ int TcpServer_IsValid(TcpServer* server)
 
 static int SelectHandler(Server* s, fd_set* rset, fd_set* reads, int num, int max)
 {
-    int ret = 0;
+    int ret = max;
+    int i = 0;
+
+    for(i=0; i<=max; i++)
+    {
+        if( FD_ISSET(i, rset) )
+        {
+            int index = i;
+            int event = -1;
+
+            if( index == s->fd )
+            {
+                struct sockaddr_in caddr = {0};
+                socklen_t asize = sizeof(caddr);
+
+                index = accept(s->fd, (struct sockaddr*)&caddr, &asize);
+
+                if( index > -1 )
+                {
+                    FD_SET(index, reads);
+
+                    ret = (index > max) ? index : max; 
+
+                    s->client[index] = TcpClient_From(index);
+                    
+                    event = EVT_CONN;
+                }
+            }
+            else
+            {
+                event = EVT_DATA;
+            }
+
+            if( s->cb )
+            {
+                if( TcpClient_IsValid(s->client[index]) )
+                {
+                    s->cb(s->client[index], event);
+                }
+                else
+                {
+                    if( s->client[index] )
+                    {
+                        s->cb(s->client[index], EVT_CLOSE);
+                    }
+                    
+                    TcpClient_Del(s->client[index]);
+
+                    s->client[index] = NULL;
+
+                    FD_CLR(index, reads);
+                }
+            }
+        }
+    }
 
     return ret;
 }
@@ -122,7 +176,7 @@ void TcpServer_DoWork(TcpServer* server)
 
         max = s->fd;
 
-        while ( s->valid )
+        while( s->valid )
         {
             rset = reads;
 
@@ -136,7 +190,6 @@ void TcpServer_DoWork(TcpServer* server)
                 max = SelectHandler(s, &rset, &reads, num, max);
             }
         }
-        
     }
 }
 
