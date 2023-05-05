@@ -1,12 +1,19 @@
 #include <stdio.h>
+#include <unistd.h>
 
 int main()
 {
-    char str[] = "hello";
-    char* p = str;
+    int iofd = 0;
+    char str[] = "hello DT\n";
+    int len = 0;
+    
+    write(iofd, str, sizeof(str));
 
-    printf("str size = %d\n", sizeof(str));
-    printf("p size = %d\n", sizeof(*p));
+    len = read(iofd, str, 5);
+
+    str[len] = 0;
+
+    printf("%s\n", str);
 
     return 0;
 }
