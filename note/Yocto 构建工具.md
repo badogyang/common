@@ -67,119 +67,29 @@ imx6平台
 
 \# bitbake core-image-minimal
 
-生成的.KO文件
+![img](./img/clip_image002-1679471251991-1.jpg)
 
-1、 路径:build_imx8_fc80/tmp/work/imx8qxpmek-poky-linux/fc80a-driver/0.1-r0/git/wifi/ahd
 
-2、 根据fc80a-driver_0.1.bb文件可知，已将.ko文件编入镜像路径/modules/${KERNEL_VERSION}/extra/cyw54591
-
-![img](./img/clip_image008.jpg)
-
- 
-
-编译错误记录
-
-1)、无法连接到公司的网址https://git-master.quectel.com，导致驱动源码下载失败。
-
-![img](./img/clip_image010.jpg)
-
-解决方案：
-
-git config --global user.name “xxxxx”
-
-git config --global credential.helper store
-
-git config --global user.password “xxxxx”
-
-git config --global credential.helper store
-
- 
-
-2)指定编译芯片型号对应的driver和firmware
-
-修改路径：sources/poky/meta/recipes-core/images/core-image-minimal.bb
-
-删除fc80a之外的模块。
-
-![img](./img/clip_image012.jpg)
-
-3)移远wifi驱动路径错误，驱动源码仓名改动所致
-
-![img](./img/clip_image014.jpg)
-
-修改fc80a-driver_0.1.bb即可
-
-![img](./img/clip_image016.jpg)
 
 ## 1.2.   将固件和软件工具编译进镜像
 
-yocto编译的过程就是按照配方进行编译。下面以其中的一个fc80a-firmware_0.1.bb文件为例简单介绍。
 
-\# vim sources/meta-imx/meta-bsp/recipes-quectel-wifi/fc80a/fc80a-firmware_0.1.bb
-
-SUMMARY = "Example of how to build an external Linux kernel module"
-
-LICENSE = "CLOSED"
-
-inherit allarch
-
-从git下载代码
-
-SRC_URI = "git://git-master.quectel.com/wifi.bt/fc80a.git;protocol=https"
-
-SRCREV = "${AUTOREV}"
-
-代码目录
-
-S = "${WORKDIR}/ git/wifi"
-
-安装wifi相关内容到文件系统中。
-
-do_install() {
-
-​    install -d ${D}/lib/firmware/cyw54591
-
-​    install -d ${D}/usr/bin
-
-​    install ${S}/firmware/* ${D}/lib/firmware/cyw54591
-
-​    install ${S}/tools/* /${D}/usr/bin
-
-}
-
-FILES_${PN} += "/lib/firmware/cyw54591"
-
-FILES_${PN} += "/usr/bin"
-
-INSANE_SKIP_${PN} += "arch already-stripped file-rdeps"
-
-INHIBIT_SYSROOT_STRIP = "1"
-
-注：1、${WORKDIR}路径为tmp/work/all-poky-linux/fc80a-firmware/0.1-r0/git/wifi。
-
-2、此处是将wifi固件、及常用软件工具编译到镜像中。
-
- 
 
 （1）    添加编译模块：vim ./poky/meta/recipes-core/images/core-image-minimal.bb 添加
 
-IMAGE_INSTALL += " fc80a-firmware"
+IMAGE_INSTALL += " bt-fc905a"
 
-![img](./img/clip_image017.jpg)
+![image-20230317145847406](./img/image-20230317145847406.png)
 
-（2）    进入tmp/work/all-poky-linux/fc80a-firmware/0.1-r0/git目录下，新建firmware、 tools两个目录，并且将所需固件和软件工具（udpcpd、udhcpch、hostapd等）分别放入firmware、 tools中。
-
-![img](./img/clip_image019.jpg)
-
-（3）    设置编译环境
+（2）    设置编译环境
 
 source setup-environment build_imx8mpevk
 
-（4）    编译镜像
+（3）    编译镜像
 
 bitbake core-image-minimal
 
-（5）    镜像路径
+（4）    镜像路径
 
 build_imx8mpevk/tmp/deploy/images/imx8mpevk/core-image-minimal-imx8mpevk-20221010052735.rootfs.wic.bz2
 

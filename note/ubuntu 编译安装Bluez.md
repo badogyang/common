@@ -6,6 +6,8 @@
 
 git clone git://git.kernel.org/pub/scm/bluetooth/bluez.git 
 
+git clone git://git.kernel.org/pub/scm/libs/ell/ell.git
+
 ### 获取芯片patch(公司提供的压缩包)  
 
 1) bluez$ git am ../patches/0001-bluetooth-Add-bluetooth-support-for-QCA6174-chip.patch
