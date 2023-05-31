@@ -43,7 +43,7 @@ Yocto-5包含的Base目录（配方、源代码、编译包、镜像等）
 
 第二步：添加编译安装驱动模块
 
-\#vim source/poky/meta/recipes-core/images/core-image-minimal.bb
+\#vim sources/poky/meta/recipes-core/images/core-image-minimal.bb
 
 编辑如下
 

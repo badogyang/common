@@ -19,7 +19,7 @@ git clone git://git.kernel.org/pub/scm/libs/ell/ell.git
 
 ## 2. 编译
 
-1. $ ./bootstrap-configure --disable-android --disable-midi  
+1. $ ./bootstrap-configure --disable-android --disable-midi  --prefix=$PWD/out  
 
    这一步会出现一些包找不到的问题，按部就班给他解决就行；还出现了一个json-c版本过低的问题，解决方法
 

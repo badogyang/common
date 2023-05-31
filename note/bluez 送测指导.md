@@ -88,6 +88,12 @@ advertise on：开启BLE广播
 
 
 
+### ble client
+
+手机端使用nrf connect 开启一个ADVERTISER服务
+
+
+
 ### ble server/client 收发
 
 1. 在我们开启ble广播后，手机上使用nrf connect找到对应设备，点击连接。
