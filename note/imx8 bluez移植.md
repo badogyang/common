@@ -54,7 +54,7 @@ make install成功后，把out目录直接copy到imx8上。
 
 ./hciattach /dev/ttymxc0 bcm43xx -t120 3000000 flow
 
-
+hciattach /dev/ttyS1 qca -t120 3000000 flow
 
 进入bluetoothctl界面，开启蓝牙。
 

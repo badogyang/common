@@ -1,3 +1,5 @@
+
+
 # bluez bluetoothctl开启失败 Waiting to connect to bluetoothd...
 
 
