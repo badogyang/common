@@ -1,6 +1,11 @@
 # bluez 常用工具
 
+bluez
+
+
+
 ## bluetoothctl
+
 在编译BlueZ时，如果configure配置添加了“–enable-client”，就会编译生成Bluetoothctl工具。如果类比于WiFi，bluetoothd相当于wpa_supplicant，bluetoothctl相当于wpa_cli。
 
 bluetoothctl内部集成了一个shell交互功能，直接在命令行运行bluetoothctl工具即可进入该工具的内部shell，输入help可以查看该工具支持的命令。
@@ -234,3 +239,6 @@ hcidump可以抓取HCI层的数据，可以直接在控制台打印，也可以�
 直接打印在控制台的方式比较简陋，而且不利于后期分析，可以用hcidump -w output_file & 命令将日志记录在指定文件中，并在后台运行，待记录完数据后再将日志传回PC，直接使用Wireshark打开，效果如下图所示。
 
 ![image-20230531140814065](./img/image-20230531140814065.png)
+
+
+

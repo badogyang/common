@@ -93,6 +93,44 @@ bitbake core-image-minimal
 
 build_imx8mpevk/tmp/deploy/images/imx8mpevk/core-image-minimal-imx8mpevk-20221010052735.rootfs.wic.bz2
 
+
+
+## 编译内核
+
+bitbake -c clean-f linux-imx
+
+bitbake -c compile -f linux-imx
+
+
+
+ 单独编译Linux内核：
+
+bitbake -c compile -f -v linux-imx
+
+bitbake -c deploy -f -v linux-imx
+
+linux
+
+ 内核目录：
+
+imx-yocto-bsp/imx8mpevk_xwayland/tmp/work-shared/imx8mpevk/kernel-source
+
+ 单独编译 uboot
+
+bitbake -c compile -f -v u-boot-imx
+
+bitbake -c deploy -f -v u-boot-imx
+
+编译内核模块：
+
+bitbake linux-imx -c compile_kernelmodules -f -v
+
+  编译menuconfig
+
+bitbake -c menuconfig -v linux-imx
+
+
+
 # 2.     验证yocto镜像
 
 使用的是uuu工具进行下载。

@@ -10,6 +10,12 @@ github链接: https://github.com/bluez/bluez.
 wget http://www.kernel.org/pub/linux/bluetooth/bluez-5.60.tar.xz
 tar xvf bluez-5.60.tar.xz
 
+
+
+git clone git://git.kernel.org/pub/scm/bluetooth/bluez.git 
+
+git clone git://git.kernel.org/pub/scm/libs/ell/ell.git
+
 ## 编译BlueZ
 ### 进入到bluez目录下，执行./configure文件
 

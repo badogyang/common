@@ -28,6 +28,10 @@
 
 在bluez目录下执行。
 
+aarch64-rockchip-linux-gnu-
+
+./bootstrap-configure --disable-android --disable-midi --prefix=$PWD/out --host=aarch64-rockchip-linux CC=aarch64-linux-gnu-gcc CFLAGS="--sysroot=/home/noah/project/RK3568/RK3568/buildroot/output/rockchip_rk3568/target"
+
 ./bootstrap-configure --disable-android --disable-midi --prefix=$PWD/out --host=aarch64-poky-linux CC=aarch64-poky-linux-gcc CFLAGS="--sysroot=/opt/fsl-imx-xwayland/5.10-gatesgarth/sysroots/cortexa53-crypto-poky-linux"
 
 这里可能会ell编译报错，我们直接把报错的地方给屏蔽。
@@ -52,7 +56,7 @@ make install成功后，把out目录直接copy到imx8上。
 
 运行
 
-./hciattach /dev/ttymxc0 bcm43xx -t120 3000000 flow
+./hciattach /dev/ttymxc0 qca -t120 3000000 flow
 
 hciattach /dev/ttyS1 qca -t120 3000000 flow
 
