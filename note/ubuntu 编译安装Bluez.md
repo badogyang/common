@@ -54,7 +54,7 @@ git clone git://git.kernel.org/pub/scm/libs/ell/ell.git
 
 ### 3.2 烧录固件
 
-sudo hciattach /dev/ttyUSB0 bcmxx -t120 3000000 flow  (一般只替换芯片平台，bcmxx/qca，注意看自己的usb，使用sudo ls /dev/ttyUSB* 查看)
+sudo hciattach /dev/ttyUSB0 bcm43xx -t120 3000000 flow  (一般只替换芯片平台，bcmxx/qca，注意看自己的usb，使用sudo ls /dev/ttyUSB* 查看)
 
 这一步我这边输出
 bcm43xx_init

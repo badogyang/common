@@ -16,3 +16,13 @@
 
 ![dddb7f80fe9bc1429c5f233d8709b9b](./img/dddb7f80fe9bc1429c5f233d8709b9b.png)
 
+
+
+# bluetooth挂了
+
+Failed to set power off: org.freedesktop.DBus.Error.NoReply
+
+
+
+bluez 编译报错 ell
+

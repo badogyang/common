@@ -97,7 +97,7 @@ build_imx8mpevk/tmp/deploy/images/imx8mpevk/core-image-minimal-imx8mpevk-2022101
 
 ## 编译内核
 
-bitbake -c clean-f linux-imx
+bitbake -c clean -f linux-imx
 
 bitbake -c compile -f linux-imx
 

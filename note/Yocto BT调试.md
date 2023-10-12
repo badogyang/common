@@ -20,78 +20,129 @@ sources/meta-imx/meta-bsp/recipes-connectivity/bluez5 目录下的bb文件bluez5
 
 # fc2x蓝牙固件
 
-在sources/meta-imx/meta-bsp/目录下新建recipes-quectel-bt/fc2x目录
 
-进入fc2x目录，新建文件bt-fc21x_0.1.bb，输入
+
+拷贝蓝牙固件（tfbtfw11.tlv、tfbtnv11.bin）到sources/poky/meta/recipes-connectivity/bluez5/bluez5下，固件git路径：[BT/FW · master · WiFi.BT / QCA9377 · GitLab (quectel.com)](https://git-master.quectel.com/wifi.bt/fc2x/-/tree/master/BT/FW)
+
+修改sources/poky/meta/recipes-connectivity/bluez5/bluez5.inc 
 
 ```makefile
-SUMMARY = "fc21x BT Version"
-LICENSE = "CLOSED"
+...
+SRC_URI = "${KERNELORG_MIRROR}/linux/bluetooth/bluez-${PV}.tar.xz \
+           file://init \
+           file://run-ptest \
+           ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '', 'file://0001-Allow-using-obexd-without-systemd-in-the-user-sessio.patch', d)} \
+           file://0001-tests-add-a-target-for-building-tests-without-runnin.patch \
+           file://0001-test-gatt-Fix-hung-issue.patch \
+           file://tfbtfw11.tlv \
+           file://tfbtnv11.bin \
+           "
+#添加 file://tfbtfw11.tlv \ 和 file://tfbtnv11.bin \
 
-inherit allarch
+S = "${WORKDIR}/bluez-${PV}"
 
-SRC_URI = " \
-    file://tfbtfw11.tlv;unpack=0 \
-    file://tfbtnv11.bin;ubpack=0 \
+...
+
+do_install:append() {
+        install -d ${D}${INIT_D_DIR}
+        install -m 0755 ${WORKDIR}/init ${D}${INIT_D_DIR}/bluetooth
+
+#添加如下三行，拷贝固件到firmware目录
+        install -d ${D}/${base_libdir}/firmware/qca
+        install -m 0755 ${WORKDIR}/tfbtfw11.tlv ${D}/${base_libdir}/firmware/qca
+        install -m 0755 ${WORKDIR}/tfbtnv11.bin ${D}/${base_libdir}/firmware/qca
+
+...
+
+FILES:${PN} += " \
+    ${libdir}/bluetooth/plugins/*.so \
+    ${systemd_unitdir}/ ${datadir}/dbus-1 \
+    ${libdir}/cups \
+    ${base_libdir}/firmware/qca \
 "
-
-do_install () {
-    install -d ${D}/lib/firmware/
-    install -m 0755 ${WORKDIR}/tfbtfw11.tlv ${D}/lib/firmware/
-    install -m 0755 ${WORKDIR}/tfbtnv11.bin ${D}/lib/firmware/
-}
-
-FILES_${PN} += "/lib/firmware"
+# 在FILES:${PN} 加入${base_libdir}/firmware/qca \
 ```
 
-拷贝蓝牙固件（tfbtfw11.tlv、tfbtnv11.bin）到recipes-quectel-bt/fc2x/files下，固件git路径：[BT/FW · master · WiFi.BT / QCA9377 · GitLab (quectel.com)](https://git-master.quectel.com/wifi.bt/fc2x/-/tree/master/BT/FW)
 
-
-
-sources/poky/meta/recipes-core/images/core-image-minimal.bb中添加如下行
-
-```
-IMAGE_INSTALL += " bt-fc21x  "
-```
 
 
 
 # 内核修改
 
-修改 net/bluetooth/hci_core.c 文件
+## 步骤1
 
-```c
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index 7754fcef5c21..eb175fd60fb9 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -603,9 +603,11 @@ static int hci_init3_req(struct hci_request *req, unsigned long opt)
- 	if (hdev->commands[8] & 0x01)
- 		hci_req_add(req, HCI_OP_READ_PAGE_SCAN_ACTIVITY, 0, NULL);
- 
--	if (hdev->commands[18] & 0x02)
-+// noah: 0x02 ==> 0x04
-+#if 1
-+	if (hdev->commands[18] & 0x04)
- 		hci_req_add(req, HCI_OP_READ_DEF_ERR_DATA_REPORTING, 0, NULL);
--
-+#endif
- 	/* Some older Broadcom based Bluetooth 1.2 controllers do not
- 	 * support the Read Page Scan Type command. Check support for
- 	 * this command in the bit mask of supported commands.
-@@ -844,7 +846,7 @@ static int hci_init4_req(struct hci_request *req, unsigned long opt)
- 	/* Set erroneous data reporting if supported to the wideband speech
- 	 * setting value
- 	 */
--	if (hdev->commands[18] & 0x04) {
-+	if (hdev->commands[18] & 0x08) { //noah: 0x04==> 0x08
- 		bool enabled = hci_dev_test_flag(hdev,
- 						 HCI_WIDEBAND_SPEECH_ENABLED);
+进入kernel_source目录，修改arch/arm64/configs/imx_v8_defconfig文件里面的CONFIG_IMX_SDMA配置项为m
+
+git diff arch/arm64/configs/imx_v8_defconfig > sdma_tmp.patch
+
+
+
+进入sources/meta-imx/meta-bsp/recipes-kernel/linux/linux_imx 目录
+
+拷贝sdma_tmp.patch到sources/meta-imx/meta-bsp/recipes-kernel/linux/linux_imx下
+
+```C
+diff --git a/arch/arm64/configs/imx_v8_defconfig b/arch/arm64/configs/imx_v8_defconfig
+index 97dc633d7800..ddf1d9debbe7 100644
+--- a/arch/arm64/configs/imx_v8_defconfig
++++ b/arch/arm64/configs/imx_v8_defconfig
+@@ -830,7 +830,7 @@ CONFIG_BCM_SBA_RAID=m
+ CONFIG_FSL_EDMA=y
+ CONFIG_FSL_QDMA=m
+ CONFIG_FSL_EDMA_V3=y
+-CONFIG_IMX_SDMA=y
++CONFIG_IMX_SDMA=m
+ CONFIG_MV_XOR_V2=y
+ CONFIG_MXS_DMA=y
+ CONFIG_MXC_PXP_V3=y
 ```
 
-这里如果不相同，请给出hci_core.c的源码文件，这笔修改是用来修改在hciconfig hci0 up 没有成功的时候，报了如下错的修复，如果没有报错，请忽略：
+在sources/meta-imx/meta-bsp/recipes-kernel/linux/linux-imx_5.15.bb添加SRC_URI += "file://sdma_tmp.patch"
 
-![image-20230822164953190](./img/image-20230822164953190.png)
+```makefile
+SRC_URI += "file://002_sai.patch"
+SRC_URI += "file://003_sai.patch"
+#添加如下行
+SRC_URI += "file://sdma_tmp.patch"     
+```
+
+
+
+## 步骤2
+
+添加 sources/meta-imx/meta-bsp/recipes-bsp/firmware-imx/files 目录及目录文件（已放到对应目录）
+
+修改sources/meta-imx/meta-bsp/recipes-bsp/firmware-imx/firmware-imx_8.18.1.bb文件
+
+```
+...
+SRC_URI = " \
+    file://sdma \
+    file://epdc \
+    file://regulatory \
+    file://hdmi \
+    file://sdma-imx6q.bin \
+    file://sdma-imx7d.bin \
+    file://xcvr-imx8mp.bin \
+"
+...
+
+do_install() {
+...
+    install -d ${D}${nonarch_base_libdir}/firmware/imx/sdma
+    install -d ${D}${nonarch_base_libdir}/firmware/imx/xcvr
+    install -m 0755 ${WORKDIR}/sdma-imx6q.bin ${D}${nonarch_base_libdir}/firmware/imx/sdma
+    install -m 0755 ${WORKDIR}/sdma-imx7d.bin ${D}${nonarch_base_libdir}/firmware/imx/sdma
+    install -m 0755 ${WORKDIR}/xcvr-imx8mp.bin ${D}${nonarch_base_libdir}/firmware/imx/xcvr
+...
+    
+FILES_${PN} += "${nonarch_base_libdir}/firmware/imx/sdma ${sysconfdir}/sdma ${nonarch_base_libdir}/firmware/imx/xcvr"
+...
+```
+
+
+
+
 
 
 
