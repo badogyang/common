@@ -1,4 +1,6 @@
 ````
+
+
 抓取CP2 日志，请尝试如下方法：
 
 开机后输入如下命令，
@@ -19,5 +21,22 @@ chmod 777 /data/unisoc_dbg/*
 echo "at+armlog=1\r" > /proc/mdbg/at_cmd
 echo "at+armlog=1\r" > /proc/mdbg/at_cmd
 echo "at+armlog=1\r" > /proc/mdbg/at_cmd
+
+ cat /dev/slog_wcn0 >/data/cp2.log
+
+settings get secure bluetooth_address   //获取蓝牙mac
+
+adb shell svc bluetooth enable
 ````
+
+
+
+
+
+iwnpi工具使用
+
+```
+iwnpi wlan0 start
+iwnpi wlan0 get_mac_efuse
+```
 

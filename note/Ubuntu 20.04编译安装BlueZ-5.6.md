@@ -19,7 +19,7 @@ git clone git://git.kernel.org/pub/scm/libs/ell/ell.git
 ## 编译BlueZ
 ### 进入到bluez目录下，执行./configure文件
 
-`./configure --prefix=$PWD/out --mandir=/usr/share/man --sysconfdir=/etc --localstatedir=/var`
+./configure --prefix=$PWD/out --mandir=/usr/share/man --sysconfdir=/etc --localstatedir=/var
 
 ### 根据错误提示安装对应软件包
 1.error: GLib >= 2.28 is required

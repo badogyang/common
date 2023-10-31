@@ -39,3 +39,8 @@ pactl set-sink-volume 1 -10%
 ### 3总结
 
 一般alsa就很强大了，在pc上通用，如果在嵌入式设备如jetson nano上alsa出现设备找不到的情况时，可以使用pactl方法。
+
+```
+https://git-master.quectel.com/wifi.bt/fc6xe/-/tree/master/BT/Linux/tool/NvmUtility
+```
+

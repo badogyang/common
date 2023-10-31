@@ -4,7 +4,7 @@
 
 
 
-![image-20230313200904788](C:/Users/noah.yang/AppData/Roaming/Typora/typora-user-images/image-20230313200904788.png)
+![image-20230313200904788](./img/image-20230313200904788.png)
 
 Opcode参数分为两个字段，称为Opcode Group Field (OGF)和Opcode Command Field  段(OCF)。OGF占据6bits，而OCF占据10bits。
 

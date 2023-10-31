@@ -31,6 +31,7 @@ list-attributes local
 2）bluez端选择0x1234或0x5678对应的UUID，注意需要添加local,如
 select-attribute  local 0x5678
 3）手机端选择和bluez select-attribute同样的UUID进行收发验证。
+4）write 7 发送数据7
 
 ```
 
