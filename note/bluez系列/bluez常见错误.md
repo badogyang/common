@@ -6,7 +6,7 @@
 
 
 
-# 高通patch为合入，芯片型号不识别
+# 高通patch未合入，芯片型号不识别
 
 ![4fa5624cffa8c3dd888c6a504d8d8a4](./img/4fa5624cffa8c3dd888c6a504d8d8a4.png)
 
@@ -38,3 +38,12 @@ hciconfig hci0 up使用这个报错
 需要加sudo 权限
 
 ![image-20231018104757873](./img/image-20231018104757873.png)
+
+
+
+
+## Realtek Bluetooth ERROR: h5_download_patch: Retransmission exhausts
+
+在EC20 852R陪测版本遇到，固件版本问题，更新固件后解决。
+
+![image-20231102102008727](./img/image-20231102102008727.png)

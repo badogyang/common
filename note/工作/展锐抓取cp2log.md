@@ -22,7 +22,7 @@ echo "at+armlog=1\r" > /proc/mdbg/at_cmd
 echo "at+armlog=1\r" > /proc/mdbg/at_cmd
 echo "at+armlog=1\r" > /proc/mdbg/at_cmd
 
- cat /dev/slog_wcn0 >/data/cp2.log
+cat /dev/slog_wcn0 >/data/cp2.log
 
 settings get secure bluetooth_address   //获取蓝牙mac
 
