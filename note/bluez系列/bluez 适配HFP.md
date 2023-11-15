@@ -20,8 +20,10 @@ mount -o remount rw /
 /etc/init.d/S46ofono stop
 sleep 0.5
 echo 0 > /sys/class/rfkill/rfkill0/state
+echo 0 > /proc/bluetooth/sleep/btwrite
 sleep 0.5
 echo 1 > /sys/class/rfkill/rfkill0/state
+echo 1 > /proc/bluetooth/sleep/btwrite
 sleep 0.5
 insmod /usr/lib/modules/hci_uart.ko
 sleep 0.5
@@ -48,5 +50,36 @@ pactl list cards
 pactl set-card-profile bluez_card.44_71_47_1F_EA_B4 headset_audio_gateway
 arecord -Dhw:0,0 -d 60 -f cd -r 44100 -c 2 -t wav test.wav   #必须执行这一步才不会有电流声
 arecord -D bluealsa:HCI=hci0,DEV=44:71:47:1F:EA:B4,PROFILE=sco /as.wav
+
+
+
+
+ cat /proc/asound/card1/pcm0c/sub0/status
+ cat /proc/asound/card0pcm0p/sub0/status 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+mount -o remount rw /
+/etc/init.d/S46ofono stop
+sleep 0.5
+echo 0 > /sys/class/rfkill/rfkill0/state
+echo 0 > /proc/bluetooth/sleep/btwrite
+sleep 0.5
+echo 1 > /sys/class/rfkill/rfkill0/state
+echo 1 > /proc/bluetooth/sleep/btwrite
+sleep 0.5
+hciattach /dev/ttyS1 qca -t120 3000000 flow
+
+
+hciconfig hci0 up
+amixer -c 0 cset numid=1 3
+amixer -c 0 cset numid=2 2
+/usr/libexec/bluetooth/bluetoothd -n -d &
+hcidump -w all.log &
+bluealsa -p hfp-hf -p a2dp-sink  
 ```
 

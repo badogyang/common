@@ -242,3 +242,8 @@ hcidump可以抓取HCI层的数据，可以直接在控制台打印，也可以�
 
 
 
+# btmon
+
+使用btmon也可以抓取btsnoop
+
+命令：btmon -w btsnoop.log
