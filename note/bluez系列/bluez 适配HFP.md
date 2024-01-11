@@ -48,7 +48,7 @@ amixer -c 0 cset numid=1 3
 #步骤6     hfp需要
 pactl list cards
 pactl set-card-profile bluez_card.44_71_47_1F_EA_B4 headset_audio_gateway
-arecord -Dhw:0,0 -d 60 -f cd -r 44100 -c 2 -t wav test.wav   #必须执行这一步才不会有电流声
+arecord -Dhw:0,0 -d 60 -f cd -r 48000 -c 2 -t wav test.wav   #必须执行这一步才不会有电流声
 arecord -D bluealsa:HCI=hci0,DEV=44:71:47:1F:EA:B4,PROFILE=sco /as.wav
 
 

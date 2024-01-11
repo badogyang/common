@@ -10,16 +10,46 @@ git clone git://git.kernel.org/pub/scm/libs/ell/ell.git
 
 ### 获取芯片patch(公司提供的压缩包)  
 
-1) bluez$ git am ../patches/0001-bluetooth-Add-bluetooth-support-for-QCA6174-chip.patch
-2) bluez$ git am ../patches/0002-hciattach-set-flag-to-enable-HCI-reset-on-init.patch
-3) bluez$ git am ../patches/0003-hciattach-instead-of-strlcpy-with-strncpy-to-avoid-r.patch
-4) bluez$ git am ../patches/0004-Add-support-for-Tufello-1.1-SOC.patch
-5) bluez$ git am ../patches/0005-bluetooth-Add-support-for-multi-baud-rate.patch
-6) bluez$ git am ../patches/0006-bluetooth-Add-support-quectel-FC6X-module.patch
+1) bluez$ git am ../0001-hciattach-add-support-for-qualcomm-chip.patch
 
 ## 2. 编译
 
 1. ./bootstrap-configure --disable-android --disable-midi  --prefix=$PWD/out  
+
+2. 根据错误提示安装对应软件包
+
+   1.error: GLib >= 2.28 is required
+
+   sudo apt install libglib2.0-dev
+
+   2.error: D-Bus >= 1.6 is required
+
+   sudo apt install libdbus-1-dev
+
+   3.error: libudev >= 172 is required
+
+   sudo apt install libudev-dev
+
+   4.error: libical is required
+
+   sudo apt install libical-dev
+
+   5.error: readline header files are required
+
+   sudo apt install libreadline-dev
+
+   6.error: rst2man is required
+
+   sudo apt install python-docutils
+   sudo which rst2man
+
+   sudo apt-get install libdw-dev
+
+   
+
+   ./bootstrap: 5: libtoolize: not found
+
+   
 
    这一步会出现一些包找不到的问题，按部就班给他解决就行；还出现了一个json-c版本过低的问题，解决方法
 
@@ -38,9 +68,9 @@ git clone git://git.kernel.org/pub/scm/libs/ell/ell.git
 
    
 
-2. $ make 
+3. $ make 
 
-3. $ sudo make install
+4. $ sudo make install
 
 
 

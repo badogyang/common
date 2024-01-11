@@ -640,6 +640,3 @@ Application Options:
 
 
 
-转：
-
-[【精选】bluetoothd源码剖析(一)启动流程-CSDN博客](https://blog.csdn.net/weixin_41069709/article/details/125404935?spm=1001.2101.3001.6650.4&utm_medium=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-4-125404935-blog-10694427.235^v38^pc_relevant_anti_t3&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-4-125404935-blog-10694427.235^v38^pc_relevant_anti_t3&utm_relevant_index=9)

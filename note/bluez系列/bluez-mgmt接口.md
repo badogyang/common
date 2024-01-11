@@ -223,6 +223,15 @@ void mgmt_exit(void)
 	hci_mgmt_chan_unregister(&chan);
 }
 
+//mgmt.h   
+//MGMT_OP_READ_VERSION MGMT_READ_VERSION_SIZE对应
+#define MGMT_OP_READ_VERSION		0x0001
+#define MGMT_READ_VERSION_SIZE		0
+struct mgmt_rp_read_version {
+	__u8	version;
+	__le16	revision;
+} __packed;
+
 //hci_sock.c
 int hci_mgmt_chan_register(struct hci_mgmt_chan *c)
 {

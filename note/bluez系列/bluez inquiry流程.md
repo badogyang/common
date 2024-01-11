@@ -1,3 +1,5 @@
+# bluez inquiry流程
+
 贴一张bluez架构图方便理解
 
 ![image-20231116135507940](./img/image-20231116135507940.png)
@@ -988,7 +990,7 @@ static void process_notify(struct mgmt *mgmt, uint16_t event, uint16_t index,
 mgmt_register(adapter->mgmt, MGMT_EV_DEVICE_FOUND,
                     adapter->dev_id,
                     device_found_callback,
-                    adapter, NULL);
+                    adapter, NULL);    //如果有MGMT_EV_DEVICE_FOUND事件返回，就会调用device_found_callback
 //adapter.c
 static void device_found_callback(uint16_t index, uint16_t length,
 					const void *param, void *user_data)
