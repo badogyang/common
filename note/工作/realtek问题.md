@@ -13,3 +13,44 @@ HFP
 默认
 
 <img src="./img/a59124d3b41c8f1673258b54154839c.png" alt="a59124d3b41c8f1673258b54154839c" style="zoom: 80%;" />
+
+
+
+硬件流控相关
+
+```
+Realtek Bluetooth :Start downloading...
+Realtek Bluetooth :Send additional packet 32
+Realtek Bluetooth :Send additional packet 33
+Realtek Bluetooth :Send additional packet 34
+Realtek Bluetooth :Last packet 163
+Realtek Bluetooth :Send last pkt
+Realtek Bluetooth :Enable host hw flow control
+Realtek Bluetooth :h5_hci_reset: Issue hci reset cmd
+Realtek Bluetooth ERROR: Out-of-order packet arrived, got(6)expected(7)
+Realtek Bluetooth ERROR: Out-of-order packet arrived, got(6)expected(7)
+Realtek Bluetooth ERROR: Out-of-order packet arrived, got(6)expected(7)
+Realtek Bluetooth ERROR: Out-of-order packet arrived, got(6)expected(7)
+Realtek Bluetooth ERROR: Out-of-order packet arrived, got(6)expected(7)
+Realtek Bluetooth ERROR: Out-of-order packet arrived, got(6)expected(7)
+Realtek Bluetooth ERROR: Out-of-order packet arrived, got(6)expected(7)
+Realtek Bluetooth ERROR: Out-of-order packet arrived, got(6)expected(7)
+Realtek Bluetooth ERROR: Out-of-order packet arrived, got(6)expected(7)
+Realtek Bluetooth ERROR: Out-of-order packet arrived, got(6)expected(7)
+Realtek Bluetooth ERROR: Out-of-order packet arrived, got(6)expected(7)
+Realtek Bluetooth WARN: OP_HCI_RESET Transmission timeout
+Realtek Bluetooth ERROR: Out-of-order packet arrived, got(6)expected(7)
+Realtek Bluetooth ERROR: Out-of-order packet arrived, got(6)expected(7)
+Realtek Bluetooth ERROR: Out-of-order packet arrived, got(6)expected(7)
+Realtek Bluetooth ERROR: Out-of-order packet arrived, got(6)expected(7)
+Realtek Bluetooth ERROR: Out-of-order packet arrived, got(6)expected(7)
+Realtek Bluetooth ERROR: Out-of-order packet arrived, got(6)expected(7)
+Realtek Bluetooth ERROR: Out-of-order packet arrived, got(6)expected(7)
+Realtek Bluetooth ERROR: Out-of-order packet arrived, got(6)expected(7)
+Realtek Bluetooth ERROR: Out-of-order packet arrived, got(6)expected(7)
+Realtek Bluetooth ERROR: Out-of-order packet arrived, got(6)expected(7)
+Realtek Bluetooth ERROR: Out-of-order packet arrived, got(6)expected(7)
+Realtek Bluetooth ERROR: Out-of-order packet arrived, got(6)expected(7)
+Realtek Bluetooth WARN: OP_HCI_RESET Transmission timeout
+Realtek Bluetooth ERROR: Retransmission exhausts
+```
