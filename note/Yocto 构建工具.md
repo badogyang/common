@@ -138,3 +138,21 @@ bitbake -c menuconfig -v linux-imx
 一．将生成的镜像拷贝到电脑上，进入windows的cmd命令方式，通过如下命令方式烧写。
 
 uuu -b emmc_all imx-boot-imx8mpevk-sd.bin-flash_evk core-image-minimal-imx8mpevk-20221011020439.rootfs.wic.bz2
+
+
+
+
+
+diff --git a/sources/meta-imx/meta-bsp/recipes-kernel/linux/linux-imx/defconfig_external b/sources/meta-imx/meta-bsp/recipes-kernel/linux/linux-imx/defconfig_external
+index ed772755..06bed8e8 100644
+--- a/sources/meta-imx/meta-bsp/recipes-kernel/linux/linux-imx/defconfig_external
++++ b/sources/meta-imx/meta-bsp/recipes-kernel/linux/linux-imx/defconfig_external
+@@ -36,3 +36,8 @@ CONFIG_MMC_VUB300=y
+ CONFIG_USB_NET_DRIVERS=y
+ CONFIG_USB_USBNET=y
+ CONFIG_USB_NET_CDCETHER=y
++
++CONFIG_BT_HCIUART=n
++CONFIG_BT_HCIUART_H4=n
++CONFIG_BT_HCIUART_ATH3K=n
++
