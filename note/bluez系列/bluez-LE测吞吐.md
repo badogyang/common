@@ -8,8 +8,6 @@
 
 mount -o remount rw /
 
-/etc/init.d/S50pipewire start
-
 sleep 0.5
 
 echo 0 > /sys/class/rfkill/rfkill0/state
@@ -30,7 +28,7 @@ sleep 0.5
 
 rtk_hciattach -n -s 115200 ttyS1 rtk_h5 &
 
-（2）设置连接间隔
+（2）设置连接间隔（如果不支持扩展数据长度，可以设置最小值6，如果支持扩展长度，范围6~24都可以试一下，试过18最快。）
 
 echo 6 > /sys/kernel/debug/bluetooth/hci0/conn_min_interval
 
@@ -68,8 +66,6 @@ btgatt-server -r -m 517 -i hci0
 
 mount -o remount rw /
 
-/etc/init.d/S50pipewire start
-
 sleep 0.5
 
 echo 0 > /sys/class/rfkill/rfkill0/state
@@ -106,7 +102,7 @@ btmgmt -i hci0 power on
 
 （3）运行gatt client
 
-btgatt-client -d 90:A6:BF:E3:97:8E -m 517 (MAC地址为**PC A** 蓝牙地址，可通过hciconfig查看)
+btgatt-client -d  00:E0:4C:23:99:87 -m 517 (MAC地址为**PC A** 蓝牙地址，可通过hciconfig查看)
 
 （4）输入测试数据
 
