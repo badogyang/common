@@ -47,3 +47,12 @@ hciconfig hci0 up使用这个报错
 在EC20 852R陪测版本遇到，固件版本问题，更新固件后解决。
 
 ![image-20231102102008727](./img/image-20231102102008727.png)
+
+
+
+## Set scan parameters failed: Input/output error
+
+![3e9eea89ac1476c0b9cf3e6222b7ece](./img/3e9eea89ac1476c0b9cf3e6222b7ece.png)
+
+执行 hcitool cmd 0x03 0x0003 可解决
+
