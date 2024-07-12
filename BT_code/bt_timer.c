@@ -16,8 +16,8 @@ utimer_t timer[BT_TIMER_COUNT];
 /******************************************************************************
  * func name   : find_idle_timer
  * para        : NULL
- * return      : ·µ»Øtimer handle
- * description : Ñ°ÕÒ¿ÕÏĞµÄtimer
+ * return      : è¿”å›timer handle
+ * description : å¯»æ‰¾ç©ºé—²çš„timer
 ******************************************************************************/
 static int32_t find_idle_timer()
 {
@@ -34,11 +34,11 @@ static int32_t find_idle_timer()
 
 /******************************************************************************
  * func name   : utimer_create
- * para        : ticks(IN) -> ´¥·¢timeoutµÄtick¸öÊı
- 					 cb(IN) -> timeout»Øµ÷º¯Êı 
- 					 para(IN) -> ´«¸øtimeout»Øµ÷º¯ÊıµÄ²ÎÊı,ĞèÒªÈ«¾Ö±äÁ¿
- * return      : ·µ»Øtimer handle
- * description : ´´½¨Èí¼ş¶¨Ê±Æ÷timer
+ * para        : ticks(IN) -> è§¦å‘timeoutçš„tickä¸ªæ•°
+ 					 cb(IN) -> timeoutå›è°ƒå‡½æ•° 
+ 					 para(IN) -> ä¼ ç»™timeoutå›è°ƒå‡½æ•°çš„å‚æ•°,éœ€è¦å…¨å±€å˜é‡
+ * return      : è¿”å›timer handle
+ * description : åˆ›å»ºè½¯ä»¶å®šæ—¶å™¨timer
 ******************************************************************************/
 int32_t  utimer_create(uint32_t ticks, timer_cb cb,void *para)
 {
@@ -59,9 +59,9 @@ int32_t  utimer_create(uint32_t ticks, timer_cb cb,void *para)
 
 /******************************************************************************
  * func name   : utimer_cancel
- * para        : timerHandle(IN) -> Èí¼ş¶¨Ê±Æ÷µÄhandle
+ * para        : timerHandle(IN) -> è½¯ä»¶å®šæ—¶å™¨çš„handle
  * return      : VOID
- * description : È¡ÏûÈí¼ş¶¨Ê±Æ÷timer
+ * description : å–æ¶ˆè½¯ä»¶å®šæ—¶å™¨timer
 ******************************************************************************/
 void utimer_cancel(int32_t timerHandle)
 {
@@ -75,7 +75,7 @@ void utimer_cancel(int32_t timerHandle)
  * func name   : utimer_polling
  * para        : VOID
  * return      : VOID
- * description : ÂÖÑ¯Èí¼ş¶¨Ê±Æ÷£¬²éÕÒÊÇ·ñÓĞtimeoutµÄ¶¨Ê±Æ÷
+ * description : è½®è¯¢è½¯ä»¶å®šæ—¶å™¨ï¼ŒæŸ¥æ‰¾æ˜¯å¦æœ‰timeoutçš„å®šæ—¶å™¨
 ******************************************************************************/
 void utimer_polling()
 {
@@ -98,7 +98,7 @@ void utimer_polling()
  * func name   : utimer_init
  * para        : VOID
  * return      : VOID
- * description : ³õÊ¼»¯Èí¼ş¶¨Ê±Æ÷
+ * description : åˆå§‹åŒ–è½¯ä»¶å®šæ—¶å™¨
 ******************************************************************************/
 void utimer_init()
 {
