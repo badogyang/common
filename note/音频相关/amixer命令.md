@@ -72,3 +72,51 @@ numid=2,iface=MIXER,name='Capture MIC Path'
 - **Item #1 'Main Mic'**：使用主麦克风输入。
 - **Item #2 'Hands Free Mic'**：使用免提麦克风输入。
 - **Item #3 'BT Sco Mic'**：使用蓝牙SCO（Synchronous Connection Oriented，面向连接的同步传输）协议的麦克风输入，通常与蓝牙耳机或车载套件的麦克风相关联。
+
+
+
+##查看系统numid
+
+```
+root@rockchip:/# amixer contents
+numid=6,iface=MIXER,name='Master Playback Volume'
+  ; type=INTEGER,access=rw---RW-,values=2,min=0,max=100,step=0
+  : values=70,70
+  | dBscale-min=-50.00dB,step=0.50dB,mute=0
+numid=2,iface=MIXER,name='Capture MIC Path'
+  ; type=ENUMERATED,access=rw------,values=1,items=4
+  ; Item #0 'MIC OFF'
+  ; Item #1 'Main Mic'
+  ; Item #2 'Hands Free Mic'
+  ; Item #3 'BT Sco Mic'
+  : values=3
+numid=1,iface=MIXER,name='Playback Path'
+  ; type=ENUMERATED,access=rw------,values=1,items=11
+  ; Item #0 'OFF'
+  ; Item #1 'RCV'
+  ; Item #2 'SPK'
+  ; Item #3 'HP'
+  ; Item #4 'HP_NO_MIC'
+  ; Item #5 'BT'
+  ; Item #6 'SPK_HP'
+  ; Item #7 'RING_SPK'
+  ; Item #8 'RING_HP'
+  ; Item #9 'RING_HP_NO_MIC'
+  ; Item #10 'RING_SPK_HP'
+  : values=3
+numid=3,iface=MIXER,name='HPL Volume'
+  ; type=INTEGER,access=rw---R--,values=1,min=0,max=255,step=0
+  : values=1
+  | dBscale-min=0.00dB,step=0.01dB,mute=1
+numid=4,iface=MIXER,name='HPR Volume'
+  ; type=INTEGER,access=rw---R--,values=1,min=0,max=255,step=0
+  : values=205
+  | dBscale-min=0.00dB,step=0.01dB,mute=1
+numid=5,iface=MIXER,name='SPK Volume'
+  ; type=INTEGER,access=rw---R--,values=2,min=0,max=255,step=0
+  : values=1,205
+  | dBscale-min=0.00dB,step=0.01dB,mute=1
+```
+
+
+

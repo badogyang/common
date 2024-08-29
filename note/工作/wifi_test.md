@@ -20,11 +20,11 @@
     
     create_ap.sh -m 11n -c 6 -w 20M --ssid "softap_test" --nss 2
     
-    create_ap.sh -m 11n -c 6 -w 40M --ssid "softap_test" --nss 2
+    create_ap.sh -m 11n -c 6 -w 40M --ssid "softap_testnoah" --nss 2
     
     手机要下载一个Magic iperf的软件
     手机侧开 iperf3 -s -i 1
-    模组 iperf3 -c 192.168.11.8 -i 1 -P 4    #手机ip iperf会显示
+    模组 iperf3 -c 192.168.11.5 -i 1 -P 4 -t 100    #手机ip iperf会显示
 
 
 

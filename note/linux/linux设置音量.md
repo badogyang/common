@@ -21,7 +21,7 @@ alsamixer
 设置绝对音量，0%-100%,1表示声卡号。
 
 ```
-pactl set-sink-volume 3 40%
+pactl set-sink-volume 1 40%
 ```
 
 设置相对音量，增大10%

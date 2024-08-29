@@ -54,3 +54,27 @@ Realtek Bluetooth ERROR: Out-of-order packet arrived, got(6)expected(7)
 Realtek Bluetooth WARN: OP_HCI_RESET Transmission timeout
 Realtek Bluetooth ERROR: Retransmission exhausts
 ```
+
+[[FAE-105483\] 【路行通】RV1106-linux-kernel 5.10.110-蓝牙功能启动失败 - Software_JIRA (quectel.com)](https://ticket.quectel.com/browse/FAE-105483)
+
+![image-20240828150419539](./img/image-20240828150419539.png)
+
+
+
+---
+
+
+
+HFP问题追溯
+
+23年12月份开始向realtek提FCS850R HFP问题，24年1月中寄设备给原厂分析调试，24年2月模组做master后850R和950R调试ok，之后就一直调试无进展
+
+
+
+realtek在分析问题的时候，必须要有客户，我们自己本地调试的问题优先级放的比较低，不会投入很多资源。
+
+
+
+也是流控问题
+
+![c1917ce52116b76fd1d45ae256d787b](./img/c1917ce52116b76fd1d45ae256d787b.png)
