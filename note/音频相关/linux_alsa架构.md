@@ -101,3 +101,28 @@ enum snd_device_type {
 
 ​    通常，我们更关心的是pcm和control这两种设备。
 
+
+
+### alsa设备驱动
+
+该层包含的主要数据结构包括:
+
+\- snd_card        表示一个声卡实例, 包含多个声卡设备
+
+\- snd_device   表示一个声卡设备部件
+
+\- snd_pcm        表示一个 PCM 设备, 声卡设备的一种, 用于播放和录音
+
+\- snd_control   表示 Control 设备, 声卡设备的一种, 用于控制声卡
+
+\- snd_pcm_str 表示 PCM 流, 分为 Playback 和 Capture
+
+\- snd_pcm_substream  PCM 子流, 用于音频的播放或录制
+
+\- snd_pcm_ops    PCM 流操作集
+
+ 
+
+各结构体之间主要关系图如下所示
+
+![image-20240829195849377](./img/image-20240829195849377.png)
