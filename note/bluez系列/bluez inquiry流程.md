@@ -22,51 +22,7 @@ include/net/bluetooth
 
 
 
-## bluez——mgmt分析
 
-### 1,cmd下发
-
-linux系统的bluez的代码是存在与两部分，一部分在kernel，实现协议的一些基本功能，还有一部分在user space实现协议的一些上层功能。
-两部分之间的交互通过sockt机制，就是mgmt。
-cmd的下发主要调用的是mgmt.c中的mgmt_send（）函数
-
-```c
-unsigned int mgmt_send(struct mgmt *mgmt, uint16_t opcode, uint16_t index,
-				uint16_t length, const void *param,
-				mgmt_request_func_t callback,
-				void *user_data, mgmt_destroy_func_t destroy)
-{
-	return mgmt_send_timeout(mgmt, opcode, index, length, param, callback,
-					user_data, destroy, 0);
-}
-```
-
-
-
-这个函数有8个参数，第一个是mgmt的参数，暂时没找到其定义，第二是比较重要的数值，在mgmt_api和mgmt.h中都有定义和说明，每一个opcode对应一个cmd，在kernel部分也一模一样定义了对应的opcode。
-mgmt_send后就是靠opcode是数值对应在kernel中需要调用的对应函数。
-第二参数是index
-第三个需要传递的参数大小
-第四个是需要传递的参数
-第五个是传递的回调，用于执行完该cmd后需要回调的数据
-第六个是user需要传递的参数，一般未NULL，第六个也是，是预留设计。
-
-### 2，event上报
-
-除了前面说的cmd下发注册的回调外，kernel部分的event上报一般调用mgmt.c中的mgmt_event（）函数来完成，该函数实际是调用的mgmt_send_event()
-
-```c
-static int mgmt_event(u16 event, struct hci_dev *hdev, void *data, u16 len,
-		      struct sock *skip_sk)
-{
-	return mgmt_send_event(event, hdev, HCI_CHANNEL_CONTROL, data, len,
-			       HCI_SOCK_TRUSTED, skip_sk);
-}
-```
-
-
-
-第一个参数无容置疑就是注册的evnet数值，
 
 
 ## bluez inquiry 流程
