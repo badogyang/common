@@ -1,1 +1,1 @@
-cmd_/home/noah/common/c_learn/kernel/hello_kernel.ko := ld -r -m elf_x86_64  -z max-page-size=0x200000 -z noexecstack   --build-id  -T ./scripts/module-common.lds -o /home/noah/common/c_learn/kernel/hello_kernel.ko /home/noah/common/c_learn/kernel/hello_kernel.o /home/noah/common/c_learn/kernel/hello_kernel.mod.o;  true
+cmd_/mnt/d/common/c_learn/kernel/hello_kernel.ko := ld -r -m elf_x86_64  --build-id=sha1  -T scripts/module.lds -o /mnt/d/common/c_learn/kernel/hello_kernel.ko /mnt/d/common/c_learn/kernel/hello_kernel.o /mnt/d/common/c_learn/kernel/hello_kernel.mod.o;  true

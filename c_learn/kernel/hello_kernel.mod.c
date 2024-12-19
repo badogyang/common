@@ -1,5 +1,6 @@
-#include <linux/build-salt.h>
 #include <linux/module.h>
+#define INCLUDE_VERMAGIC
+#include <linux/build-salt.h>
 #include <linux/vermagic.h>
 #include <linux/compiler.h>
 
@@ -9,7 +10,7 @@ MODULE_INFO(vermagic, VERMAGIC_STRING);
 MODULE_INFO(name, KBUILD_MODNAME);
 
 __visible struct module __this_module
-__section(.gnu.linkonce.this_module) = {
+__section(".gnu.linkonce.this_module") = {
 	.name = KBUILD_MODNAME,
 	.init = init_module,
 #ifdef CONFIG_MODULE_UNLOAD
@@ -23,8 +24,8 @@ MODULE_INFO(retpoline, "Y");
 #endif
 
 static const struct modversion_info ____versions[]
-__used __section(__versions) = {
-	{ 0xdd8f8694, "module_layout" },
+__used __section("__versions") = {
+	{ 0x96aee806, "module_layout" },
 	{ 0xc5850110, "printk" },
 	{ 0xbdfb6dbb, "__fentry__" },
 };
@@ -32,4 +33,4 @@ __used __section(__versions) = {
 MODULE_INFO(depends, "");
 
 
-MODULE_INFO(srcversion, "FA443AA96B64A4D017EDFC3");
+MODULE_INFO(srcversion, "72E1F4B8FE9293D6A9E7B7A");

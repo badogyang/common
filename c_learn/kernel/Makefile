@@ -1,11 +1,9 @@
-ifneq  ($(KERNELRELEASE),)
 obj-m:=hello_kernel.o
-else
-KDIR:=/lib/modules/$(shell uname -r)/build
-PWD:=$(shell pwd)
+CURRENT_PATH:=$(shell pwd)
+LINUX_KERNAL:=$(shell uname -r)
+LINUX_KERNAL_PATH:=/lib/modules/$(LINUX_KERNAL)/build
 
 all:
-	$(MAKE) -C $(KDIR) M=$(PWD) modules
+	make -C $(LINUX_KERNAL_PATH) M=$(CURRENT_PATH) modules
 clean:
-	rm -f *.ko *.o *.symvers *.cmd *.cmd.o
-endif
+	make -C $(LINUX_KERNAL_PATH) M=$(CURRENT_PATH) clean

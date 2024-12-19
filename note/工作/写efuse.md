@@ -1,5 +1,5 @@
 ```
-insmod /system/lib/modules/8852bts.ko rtw_rfe_type=02
+insmod /system/lib/modules/8723ds.ko rtw_rfe_type=02
 ifconfig wlan0 up
 sleep 0.5
 rtwpriv wlan0 mp_start 
@@ -30,6 +30,11 @@ rtwpriv wlan0 efuse_set btfk2map (寫入HW EFUE)
 rtwpriv wlan0 efuse_get btrealmap (讀出HW EFUSE)
 
 
+rtwpriv wlan0 mp_start
+rtwpriv wlan0 efuse_mask off
+rtwpriv wlan0 efuse_get realmap
+rtwpriv wlan0 efuse_get btfmap
+rtwpriv wlan0 efuse_get btbmap
 
 
 rtw_tx_pwr_lmt_enable=0 rtw_rfe_type=02
@@ -72,7 +77,7 @@ create_ap.sh -m 11ax -c 6 -w 40M --ssid "softap_test_noah" --nss 2
 
 手机要下载一个Magic iperf的软件
 手机侧开 iperf3 -s -i 1
-模组 iperf3 -c 192.168.11.9 -i 1 -P 4 -t 10    #手机ip iperf会显示
+模组 iperf3 -c 192.168.11.9 -i 1 -P 4 -t 50    #手机ip iperf会显示
 
 while true; do cat /proc/net/$(ls /proc/net/|grep rtl)/wlan0/btcoex; sleep 2; done;
 

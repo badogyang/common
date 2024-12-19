@@ -1,3 +1,9 @@
+uart串口配置
+
+![ba49c4b16be1ff441abb5a1177ba042](./img/ba49c4b16be1ff441abb5a1177ba042.png)
+
+
+
 HFP
 
 蓝牙固件需要模式是sco over hci，需要改成走PCM，原厂改，需要提供如下信息
@@ -17,6 +23,8 @@ HFP
 
 
 硬件流控相关
+
+![1314a9aefceb12b9f2678b525474b1c](./img/1314a9aefceb12b9f2678b525474b1c.png)
 
 ```
 Realtek Bluetooth :Start downloading...

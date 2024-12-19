@@ -93,7 +93,7 @@ pw-record  - | pw-play -
 
 
 pactl list sinks short
-pactl set-default-sink 64
+pactl set-default-sink 69
 
 amixer -c 0 cset numid=1 3
 amixer -c 0 cset numid=2 1

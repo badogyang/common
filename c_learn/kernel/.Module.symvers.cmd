@@ -1,0 +1,1 @@
+cmd_/mnt/d/common/c_learn/kernel/Module.symvers := sed 's/ko$$/o/' /mnt/d/common/c_learn/kernel/modules.order | scripts/mod/modpost -m -a -E  -o /mnt/d/common/c_learn/kernel/Module.symvers -e -i Module.symvers   -T -

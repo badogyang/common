@@ -21,7 +21,7 @@ alsamixer
 设置绝对音量，0%-100%,1表示声卡号。
 
 ```
-pactl set-sink-volume 1 40%
+pactl set-sink-volume 0 40%
 ```
 
 设置相对音量，增大10%
@@ -43,4 +43,58 @@ pactl set-sink-volume 1 -10%
 ```
 https://git-master.quectel.com/wifi.bt/fc6xe/-/tree/master/BT/Linux/tool/NvmUtility
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
