@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ComfyUI Image Generator</title>
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .preview-image {
+            max-width: 300px;
+            margin: 10px 0;
+        }
+
+        .result-image {
+            max-width: 100%;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>ComfyUI Image Generator</h1>
+        <div>
+            <h3>Source Image:</h3>
+            <input type="file" id="sourceImage" accept="image/">
+            <img id="sourcePreview" class="preview-image">
+        </div>
+        <div>
+            <h3>Pose Image:</h3>
+            <input type="file" id="poseImage" accept="image/">
+            <img id="posePreview" class="preview-image">
+        </div>
+        <button id="generateBtn">Generate Image</button>
+        <div>
+            <h3>Result:</h3>
+            <img id="resultImage" class="result-image">
+        </div>
+    </div>
+    <script>
+        // 初始化 ComfyUI API
+        const comfy = new ComfyUIAPI();
+        // 预览图片功能
+        function previewImage(input, previewElement) {
+            input.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        previewElement.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+        // 设置预览
+        previewImage(
+            document.getElementById('sourceImage'),
+            document.getElementById('sourcePreview')
+        );
+        previewImage(
+            document.getElementById('poseImage'),
+            document.getElementById('posePreview')
+        );
+        // 生成按钮点击事件
+        document.getElementById('generateBtn').addEventListener('click', async () => {
+            const sourceFile = document.getElementById('sourceImage').files[0];
+            const poseFile = document.getElementById('poseImage').files[0];
+            if (!sourceFile || !poseFile) {
+                alert('Please select both source and pose images');
+                return;
+            }
+            try {
+                document.getElementById('generateBtn').disabled = true;
+                document.getElementById('generateBtn').textContent = 'Generating...';
+                const imageUrl = await comfy.generateImage(sourceFile, poseFile);
+                document.getElementById('resultImage').src = imageUrl;
+            } catch (error) {
+                alert(`Error: ${error.message}`);
+            } finally {
+                document.getElementById('generateBtn').disabled = false;
+                document.getElementById('generateBtn').textContent = 'Generate Image';
+            }
+        });
+    </script>
+</body>
+
+</html>
+
+javaScript:
+class ComfyUIAPI {
+    constructor(host = '127.0.0.1', port = 8188) {
+        this.serverAddress = `http://${host}:${port}`;
+        this.wsAddress = `ws://${host}:${port}/ws`;
+    }
+
+    async uploadImage(file) {
+        const formData = new FormData();
+        formData.append('image', file);
+
+        const response = await fetch(`${this.serverAddress}/upload/image`, {
+            method: 'POST',
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to upload image: ${response.statusText}`);
+        }
+
+        return file.name;
+    }
+
+    async generateImage(sourceImageFile, poseImageFile) {
+        try {
+            // 上传源图片和姿势图片
+            const sourceImageName = await this.uploadImage(sourceImageFile);
+            const poseImageName = await this.uploadImage(poseImageFile);
+
+            // 读取工作流配置
+            const response = await fetch('一寸照.json');
+            const workflow = await response.json();
+
+            // 更新工作流中的图片路径
+            workflow["14"]["inputs"]["image"] = sourceImageName;
+            workflow["29"]["inputs"]["image"] = poseImageName;
+
+            // 生成prompt ID
+            const promptId = crypto.randomUUID();
+
+            // 发送请求到ComfyUI
+            const promptResponse = await fetch(`${this.serverAddress}/prompt`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    prompt: workflow,
+                    client_id: promptId
+                })
+            });
+
+            if (!promptResponse.ok) {
+                throw new Error(`Failed to send prompt: ${promptResponse.statusText}`);
+            }
+
+            // 通过WebSocket监听生成进度
+            return new Promise((resolve, reject) => {
+                const ws = new WebSocket(this.wsAddress);
+
+                ws.onmessage = async (event) => {
+                    const message = JSON.parse(event.data);
+
+                    switch (message.type) {
+                        case 'executing':
+                            console.log(`Processing node: ${message.data.node}`);
+                            break;
+
+                        case 'executed':
+                            if (message.data.output?.images) {
+                                const images = message.data.output.images;
+                                for (const image of images) {
+                                    const imageUrl = `${this.serverAddress}/view?filename=${image.filename}`;
+                                    resolve(imageUrl);
+                                    ws.close();
+                                    return;
+                                }
+                            }
+                            break;
+
+                        case 'execution_error':
+                            reject(new Error(`Execution error: ${JSON.stringify(message)}`));
+                            ws.close();
+                            break;
+                    }
+                };
+
+                ws.onerror = (error) => {
+                    reject(error);
+                    ws.close();
+                };
+            });
+        } catch (error) {
+            throw new Error(`Generation failed: ${error.message}`);
+        }
+    }
+}
+
+// HTML 示例

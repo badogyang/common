@@ -1,3 +1,5 @@
+# author: noah.yang
+
 import pandas as pd
 import struct
 import os
@@ -6,8 +8,8 @@ def update_binary_files_from_excel(input_excel):
     try:
         # 读取 Excel 文件
         df = pd.read_excel(input_excel)
-        if 'filename' not in df.columns or 'mac_address' not in df.columns :
-            raise ValueError("Excel 表格中必须包含 'filename', 'mac_address' 和 'offset' 三列")
+        if 'filename' not in df.columns or 'BT_MAC' not in df.columns :
+            raise ValueError("Excel 表格中必须包含 'filename', 'BT_MAC'")
     except Exception as e:
         print(f"读取 Excel 文件失败: {e}")
         return
@@ -16,8 +18,7 @@ def update_binary_files_from_excel(input_excel):
         try:
             # 获取 Excel 行数据
             filename = row['filename']
-            mac_address = row['mac_address']
-            offset = 0x3b2
+            mac_address = row['BT_MAC']
 
             # 检查 filename 是否为空或 NaN
             if pd.isna(filename):
@@ -46,10 +47,10 @@ def update_binary_files_from_excel(input_excel):
 
                 bin_file.seek(0x3b2)  # 定位到偏移位置
                 bin_file.write(mac_bytes)  # 写入 MAC 地址
-                print(f"成功更新文件 '{filename}' 的 MAC 地址，偏移位置：0x3b2")
+                print(f"成功更新文件 '{filename}'")
         except Exception as e:
             print(f"处理文件 '{filename}' 时发生错误: {e}")
 
 # 示例调用
-input_excel_path = "20241120_手动写号校准记录表.xlsx"  # 替换为你的 Excel 文件路径
+input_excel_path = "20250102FME175T写号记录表.xlsx"  # 替换为你的 Excel 文件路径
 update_binary_files_from_excel(input_excel_path)
