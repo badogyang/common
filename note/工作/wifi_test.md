@@ -27,6 +27,28 @@
     模组 iperf3 -c 192.168.11.5 -i 1 -P 4 -t 600    #手机ip iperf会显示
 
 
+​    
+    /usr/libexec/bluetooth/bluetoothd -n &
+    mount -o remount rw /
+    /etc/init.d/S50pipewire start
+    sleep 0.5
+    insmod /usr/lib/modules/rtk_btusb.ko
+    sleep 0.5
+    echo 0 > /sys/class/rfkill/rfkill0/state
+    echo 0 > /proc/bluetooth/sleep/btwrite
+    sleep 0.5
+    echo 1 > /sys/class/rfkill/rfkill0/state
+    echo 1 > /proc/bluetooth/sleep/btwrite
+    sleep 0.5
+    rtk_hciattach -n -s 115200 ttyS1 rtk_h5 &
+    
+    pactl list sinks short
+    pactl set-default-sink 50
+    
+    amixer -c 0 cset numid=1 3
+    amixer -c 0 cset numid=2 1
+
+
 
 ```
   bt_sound: bt-sound {
